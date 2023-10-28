@@ -348,7 +348,7 @@ void aes_key_expansion(uint8_t *key, uint8_t *w) {
  */
 uint8_t *aes_init(size_t key_size) {
 
-        switch (key_size) {
+    switch (key_size) {
     default:
     case 16: Nk = 4; Nr = 10; break;
     case 24: Nk = 6; Nr = 12; break;
@@ -421,6 +421,11 @@ void aes_cipher(uint8_t *in, uint8_t *out, uint8_t *w) {
 
   sub_bytes(state);
   shift_rows(state);
+    // Using T-boxes:
+  printf("\n");
+  for (int i = 0; i < 16; i++){
+    printf("%.2x", state[i]);
+  }
   add_round_key(state, w, Nr);
 
   transpose_out(out, state);
@@ -447,6 +452,10 @@ void aes_inv_cipher(uint8_t *in, uint8_t *out, uint8_t *w) {
 
   inv_shift_rows(state);
   inv_sub_bytes(state);
+  printf("\n");
+  for (int i = 0; i < 16; i++){
+    printf("%.2x", state[i]);
+  }
   add_round_key(state, w, 0);
 
   transpose_out(out, state);
